@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SEE Grade Sheet - Professional</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printable, #printable * {
+        visibility: visible;
+      }
+      #printable {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      button#print-btn {
+        display: none;
+      }
+    }
+    /* Custom font-like style for official feel */
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #f3f4f6;
+    }
+    .certificate-header {
+      font-family: 'Georgia', serif;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+    .subject-row:nth-child(even) {
+      background-color: #f9fafb;
+    }
+  </style>
+</head>
+<body class="p-8 text-gray-900">
+
+  <div class="max-w-5xl mx-auto bg-white shadow-xl border border-gray-300 p-12 rounded-lg" id="printable">
+
+    <!-- Header -->
+    <header class="text-center border-b border-gray-300 pb-6 mb-10">
+      <h1 class="certificate-header text-4xl font-bold text-blue-700 tracking-widest">Secondary Education Examination</h1>
+      <h2 class="certificate-header text-2xl font-semibold mt-2">Grade-Sheet</h2>
+    </header>
+
+    <!-- Search Form -->
+    <section class="mb-12">
+      <form id="resultForm" class="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto justify-center items-end">
+        <div class="flex flex-col w-full sm:w-1/2">
+          <label for="symbol" class="mb-1 font-semibold text-gray-700">Symbol Number</label>
+          <input
+            type="text"
+            id="symbol"
+            name="symbol"
+            maxlength="9"
+            required
+            placeholder="e.g. 06605673I"
+            class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div class="flex flex-col w-full sm:w-1/2">
+          <label for="dob" class="mb-1 font-semibold text-gray-700">Date of Birth (BS)</label>
+          <input
+            type="text"
+            id="dob"
+            name="dob"
+            maxlength="10"
+            required
+            placeholder="yyyy-mm-dd"
+            class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <button
+          type="submit"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md shadow-md transition"
+        >
+          Search Result
+        </button>
+      </form>
+    </section>
+
+    <!-- Result Section -->
+    <section id="resultSection" class="hidden">
+
+      <!-- Student Info -->
+      <div class="mb-10 space-y-3 text-gray-700 text-center">
+        <p class="tracking-widest text-lg">
+          THE GRADE(S) SECURED BY
+          <span id="resSymbol" class="font-semibold text-black tracking-normal ml-2"></span>
+        </p>
+        <p class="tracking-widest text-lg">
+          DATE OF BIRTH
+          <span id="resDob" class="font-semibold text-black tracking-normal ml-2"></span>
+        </p>
+        <p class="tracking-widest text-lg">
+          IN THE ANNUAL SEE EXAMINATION OF
+          <span id="resYear" class="font-semibold text-black tracking-normal ml-2">2081 BS</span>
+        </p>
+      </div>
+
+      <!-- Grades Table -->
+      <div class="overflow-x-auto">
+        <table
+          class="w-full border border-gray-400 rounded-lg text-left text-sm shadow-sm"
+          id="gradesTable"
+        >
+          <thead class="bg-blue-100 border-b border-gray-400">
+            <tr>
+              <th class="py-3 px-4 font-semibold text-blue-800 tracking-wide">SUBJECTS</th>
+              <th class="py-3 px-4 font-semibold text-blue-800 text-center">CREDIT HOURS</th>
+              <th class="py-3 px-4 font-semibold text-blue-800 text-center">GRADE</th>
+              <th class="py-3 px-4 font-semibold text-blue-800 text-center">GRADE POINT</th>
+              <th class="py-3 px-4 font-semibold text-blue-800 text-center">FINAL GRADE</th>
+              <th class="py-3 px-4 font-semibold text-blue-800 text-center">REMARKS</th>
+            </tr>
+          </thead>
+          <tbody id="gradesBody"></tbody>
+          <tfoot>
+            <tr class="border-t-2 border-gray-400 font-semibold bg-blue-50">
+              <td colspan="5" class="text-right py-3 px-4">GRADE POINT AVERAGE (GPA) :</td>
+              <td id="resGpa" class="text-center py-3 px-4"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- Notes Section -->
+      <section
+        class="mt-8 text-gray-600 text-sm space-y-2 max-w-3xl mx-auto"
+      >
+        <p><strong>Notes:</strong></p>
+        <p>1. One Credit Hour equals 32 Clock Hours.</p>
+        <p>2. TH : Theory, IN : Internal</p>
+        <p>3. *Abs : Absent</p>
+        <p>&nbsp;&nbsp;*T : Theory Grade Missing</p>
+        <p>&nbsp;&nbsp;*I : Internal Grade Missing</p>
+        <p>&nbsp;&nbsp;# : Subject(s) Appeared in the supplementary / Grade Increment Examination</p>
+        <p>&nbsp;&nbsp;NG : Non Graded</p>
+        <hr class="border-gray-300" />
+        <p>
+          This Sheet is for general idea of grade(s) you secured. This is not for
+          official use. If any mistakes appear; record at SEE Board ledger will be
+          referred.
+        </p>
+      </section>
+
+    </section>
+  </div>
+
+  <!-- Print Button -->
+  <div class="max-w-5xl mx-auto mt-6 flex justify-end">
+    <button
+      id="print-btn"
+      onclick="window.print()"
+      class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md shadow-md transition"
+      disabled
+    >
+      Print Gradesheet
+    </button>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div id="loadingSpinner" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+    <div class="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+  </div>
+
+  <!-- Error Message -->
+  <div
+    id="errorMessage"
+    class="hidden max-w-5xl mx-auto mt-6 p-4 bg-red-100 text-red-700 border border-red-400 rounded"
+  ></div>
+
+  <script>
+    const form = document.getElementById('resultForm');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const errorMessage = document.getElementById('errorMessage');
+    const resultSection = document.getElementById('resultSection');
+    const printBtn = document.getElementById('print-btn');
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+
+      // Clear previous results/errors
+      errorMessage.classList.add('hidden');
+      resultSection.classList.add('hidden');
+      printBtn.disabled = true;
+
+      const symbol = form.symbol.value.trim();
+      const dob = form.dob.value.trim();
+
+      if (!symbol || !dob) {
+        errorMessage.textContent = 'Both Symbol and Date of Birth are required.';
+        errorMessage.classList.remove('hidden');
+        return;
+      }
+
+      loadingSpinner.classList.remove('hidden');
+
+      try {
+        const res = await fetch('/api/see-result', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ symbol, dob }),
+        });
+
+        if (!res.ok) {
+          const errData = await res.json();
+          throw new Error(errData.message || 'Failed to fetch result');
+        }
+
+        const data = await res.json();
+
+        // Show info
+        document.getElementById('resSymbol').textContent = data.symbol;
+        document.getElementById('resDob').textContent = data.dob;
+        document.getElementById('resYear').textContent = '2081 BS'; // static as per your example
+        document.getElementById('resGpa').textContent = data.gpa || 'N/A';
+
+        // Render subjects
+        const tbody = document.getElementById('gradesBody');
+        tbody.innerHTML = '';
+        if (data.subjects.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" class="text-center p-4 font-semibold text-gray-500">No subjects found.</td></tr>`;
+        } else {
+          data.subjects.forEach(({subject, creditHours, grade, gradePoint, finalGrade, remarks}, i) => {
+            const row = document.createElement('tr');
+            row.classList.add('subject-row', i % 2 === 1 ? 'bg-gray-50' : '');
+            row.innerHTML = `
+              <td class="py-2 px-4 font-medium">${subject}</td>
+              <td class="py-2 px-4 text-center">${creditHours}</td>
+              <td class="py-2 px-4 text-center">${grade}</td>
+              <td class="py-2 px-4 text-center">${gradePoint}</td>
+              <td class="py-2 px-4 text-center">${finalGrade}</td>
+              <td class="py-2 px-4 text-center">${remarks || ''}</td>
+            `;
+            tbody.appendChild(row);
+          });
+        }
+
+        resultSection.classList.remove('hidden');
+        printBtn.disabled = false;
+      } catch (error) {
+        errorMessage.textContent = error.message;
+        errorMessage.classList.remove('hidden');
+      } finally {
+        loadingSpinner.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
