@@ -224,7 +224,7 @@
       loadingSpinner.classList.remove('hidden');
 
       try {
-        const res = await fetch('/api/see-result', {
+        const res = await fetch('https://see-sheet.samirb.com.np/api/see-result', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ symbol, dob }),
