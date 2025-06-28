@@ -3,3 +3,5 @@ package-lock.json
 .vercel
 test.js
 test.html
+error.log
+combined.log
